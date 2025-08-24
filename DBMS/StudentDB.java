@@ -33,9 +33,12 @@ public class StudentDB {
             sc.nextLine();
             System.out.print(SKY_TURQUOISE+"\t\t\t\t\t\t\t\t\t\tEnter Password: "+RESET);
             String studPass = sc.nextLine();
-            String sSearch = " select * from student where studentName='" + studName + "' and enrollmentNo=" + enroll + " and" +
-                    " studentPassword='" + studPass + "' ;";
-            Statement st = con.createStatement();
+            String sSearch = " select * from student where studentName= ? and enrollmentNo= ? and" +
+                    " studentPassword= ? ;";
+            PreparedStatement  st = con.prepareStatement(sSearch);
+            st.setString(1,studName);
+            st.setLong(2,enroll);
+            st.setString(3,studPass);
             ResultSet r = st.executeQuery(sSearch);
 
             boolean fix2 = r.next();

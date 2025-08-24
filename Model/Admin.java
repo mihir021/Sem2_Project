@@ -575,16 +575,7 @@ public class Admin {
             sc.nextLine();
             return;
         }
-        try {
-            String checkDId = "select * from department where deptId = " + deptId;
-            Statement s = con.createStatement();
-            ResultSet rs = s.executeQuery(checkDId);
-            rs.next();
-            rs.getString(2);
-        } catch (Exception e) {
-            System.out.println("\t\t\t\t\t\t\t\t\t\t"+ CORAL_RED+"department id doesn't exists 😕"+ RESET);
-            return;
-        }
+        if (extracted(deptId)) return;
 
         Faculty faculty=new Faculty(id,deptId,name,email,password,contactNo,address,specialization);
         FacultyDB obj = new FacultyDB();
@@ -600,6 +591,21 @@ public class Admin {
         }
         //return true;
     }
+
+    private boolean extracted(int deptId) {
+        try {
+            String checkDId = "select * from department where deptId = " + deptId;
+            Statement s = con.createStatement();
+            ResultSet rs = s.executeQuery(checkDId);
+            rs.next();
+            rs.getString(2);
+        } catch (Exception e) {
+            System.out.println("\t\t\t\t\t\t\t\t\t\t"+ CORAL_RED+"department id doesn't exists 😕"+ RESET);
+            return true;
+        }
+        return false;
+    }
+
     void addDepartment() {
         int deptId;
         try {
@@ -668,16 +674,7 @@ public class Admin {
         System.out.print("\t\t\t\t\t\t\t\t\t\t"+ SKY_TURQUOISE+"Enter Department-Id: "+ RESET);
         int deptId=sc.nextInt();
         sc.nextLine();
-        try {
-            String checkDId = "select * from department where deptId = " + deptId;
-            Statement s = con.createStatement();
-            ResultSet rs = s.executeQuery(checkDId);
-            rs.next();
-            rs.getString(2);
-        } catch (Exception e) {
-            System.out.println("\t\t\t\t\t\t\t\t\t\t"+ CORAL_RED+"department id doesn't exists 😕"+ RESET);
-            return;
-        }
+        if (extracted(deptId)) return;
         courseInfo cObj = new courseInfo(courseId,deptId,courseName);
         try {
             String sInsert = " insert into course" +

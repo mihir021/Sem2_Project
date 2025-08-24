@@ -33,9 +33,12 @@ public class FacultyDB {
             sc.nextLine();
             System.out.print("\t\t\t\t\t\t\t\t\t\tEnter Password: "+RESET);
             String facultyPass = sc.nextLine();
-            String sSearch = " select * from faculty where facultyName='" + facultyName + "' and facultyID=" + facultyId + " and" +
-                    " facultyPassword='" + facultyPass + "' ;";
-            Statement st = con.createStatement();
+            String sSearch = " select * from faculty where facultyName = ? and facultyID = ? and " +
+                    " facultyPassword= ? ;";
+            PreparedStatement  st = con.prepareStatement(sSearch);
+            st.setString(1,facultyName);
+            st.setInt(2,facultyId);
+            st.setString(3,facultyPass);
             ResultSet r = st.executeQuery(sSearch);
             if(!r.next()){
                 return false;
@@ -82,8 +85,10 @@ public class FacultyDB {
     public void editFaculty(int id, String name){
         String sql = "{call updateFaculty(?,?,?,?)}";
         try {
-            String sSearch = "select * from faculty where facultyId = "+id +" and facultyName = '"+name+"'";
+            String sSearch = "select * from faculty where facultyId = ? and facultyName = ?";
             PreparedStatement pst = con.prepareStatement(sSearch);
+            pst.setInt(1,id);
+            pst.setString(2,name);
             ResultSet rs=pst.executeQuery();
             if(rs!=null){
                 String choice;
