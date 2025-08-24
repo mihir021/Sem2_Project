@@ -27,8 +27,8 @@ public class BackUp{
                 writer.println(table);
                 Statement stmt = conn.createStatement();
                 ResultSet rs = stmt.executeQuery("SELECT * FROM " + tableName);
-                ResultSetMetaData rsmd = rs.getMetaData();
-                int columnCount = rsmd.getColumnCount();
+                ResultSetMetaData rood = rs.getMetaData();
+                int columnCount = rood.getColumnCount();
 
                 while (rs.next()) {
                     StringBuilder insert = new StringBuilder("INSERT INTO " + tableName + " VALUES(");

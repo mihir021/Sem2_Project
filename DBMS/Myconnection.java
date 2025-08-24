@@ -9,8 +9,9 @@ import static Model.Color.RESET;
 
 public class Myconnection {
         Connection con1;
-        public Connection MyConnection(Connection con) {
-            String db_url = "jdbc:mysql://localhost:3306/module";
+
+    public Connection MyConnection(Connection con) {
+        String db_url = "jdbc:mysql://localhost:3306/module";
             String db_user = "root";
             String db_pass = "";
             String driver = "com.mysql.cj.jdbc.Driver";

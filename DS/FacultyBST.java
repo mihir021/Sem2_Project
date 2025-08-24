@@ -43,20 +43,14 @@ public class FacultyBST {
         while (true){
             if(id > temp.getFacultyId()){
                 temp = temp.right;
-                if(temp == null){
-                    return null;
-                }
-                if(temp.getFacultyId()==id){
-                    return temp;
-                }
             } else {
                 temp = temp.left;
-                if(temp == null){
-                    return null;
-                }
-                if (temp.getFacultyId()==id) {
-                    return temp;
-                }
+            }
+            if(temp == null){
+                return null;
+            }
+            if(temp.getFacultyId()==id){
+                return temp;
             }
         }
     }

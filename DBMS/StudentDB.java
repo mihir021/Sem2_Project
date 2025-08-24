@@ -15,7 +15,7 @@ public class StudentDB {
     public StudentDB(){
         try {
             Myconnection my = new Myconnection();
-            con = my.MyConnection(con);
+            con = my.MyConnection(null);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

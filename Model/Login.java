@@ -8,9 +8,7 @@ public class Login {
     public static void main(String[] args) throws Exception{
         BSTThread th = new BSTThread();
         th.start();
-        synchronized (th){
-            th.wait();
-        }
+        th.join();
         Scanner sc = new Scanner(System.in);
         hhhhgg();
         String choice;

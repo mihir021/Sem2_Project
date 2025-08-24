@@ -66,22 +66,6 @@ public class Admin {
             this.date = date;
             this.aboutEvent = aboutEvent;
         }
-
-        public int getEventNo() {
-            return eventNo;
-        }
-
-        public String getEventName() {
-            return eventName;
-        }
-
-        public LocalDate getDate() {
-            return date;
-        }
-        public String getAboutEvent() {
-            return aboutEvent;
-        }
-
     }
     static class FeeInfo{
 
@@ -96,14 +80,6 @@ public class Admin {
         public int getFeeId() {
             return feeId;
         }
-
-        public int getCourseId() {
-            return courseId;
-        }
-        public double getFeeAmount() {
-            return feeAmount;
-        }
-
     }
     static class DepartmentInfo{
         int depId;
@@ -155,7 +131,7 @@ public class Admin {
 
     public Admin(){
         Myconnection my = new Myconnection();
-        con = my.MyConnection(con);
+        con = my.MyConnection(null);
     }
     boolean checkAdmin(){
         System.out.print("\t\t\t\t\t\t\t\t\t\t"+Color.BRIGHT_YELLOW+"Enter Admin Name: ");
@@ -704,9 +680,6 @@ public class Admin {
         }
         courseInfo cObj = new courseInfo(courseId,deptId,courseName);
         try {
-            Statement st = con.createStatement();
-            //ResultSet exists=st.executeQuery(sql);
-            //if(exists.next()) {
             String sInsert = " insert into course" +
                     " values(?,?,?)";
             int r;
@@ -825,7 +798,7 @@ public class Admin {
             System.out.println("\t\t\t\t\t\t\t\t\t\t"+ CORAL_RED+"Duplication of primary key not allowed 😐"+ RESET);
         }
     }
-    int assignSubject() {
+    void assignSubject() {
         int id;
         try {
             System.out.print("\t\t\t\t\t\t\t\t\t\t"+ SKY_TURQUOISE+"Enter Faculty's Id: "+ RESET);
@@ -833,15 +806,15 @@ public class Admin {
         }catch (Exception e) {
             System.out.println("\t\t\t\t\t\t\t\t\t\t"+ CORAL_RED+"Input mismatch exception 😕"+ RESET);
             sc.nextLine();
-            return -1;
+            return ;
         }
         String sql="select * from faculty where facultyId="+id;
-        int subjectId = 0;
+        int subjectId ;
         try {
             Statement st = con.createStatement();
             ResultSet rs=st.executeQuery(sql);
             if(rs.next()){
-                Faculty faculty=facultyBST.searchPreOrder(id);
+                Faculty faculty= FacultyBST.searchPreOrder(id);
                 System.out.print("\t\t\t\t\t\t\t\t\t\t"+ SKY_TURQUOISE+"Enter Subject Id: "+ RESET);
                 subjectId =sc.nextInt();
                 sql="select * from subject where subjectID="+subjectId;
@@ -851,7 +824,9 @@ public class Admin {
                     int r=st.executeUpdate(sql);
                     System.out.println( r>0 ? ("\t\t\t\t\t\t\t\t\t\t"+Color.LIME_GREEN_GLOW+"Subject is assigned ✅"+ RESET) : ("\t\t\t\t\t\t\t\t\t\t"+ CORAL_RED+"Subject is not assigned 😕"+ RESET));
                     if(r>0){
-                        faculty.subjectId=subjectId;
+                        if (faculty != null) {
+                            faculty.subjectId=subjectId;
+                        }
                         Action a=new Action("assignSubject", faculty);
                         historyStack.push(a);
                     }
@@ -867,7 +842,6 @@ public class Admin {
             System.out.println("\t\t\t\t\t\t\t\t\t\t"+ CORAL_RED+"Duplication of primary key not allowed 😐"+ RESET);
         }
         sc.nextLine();
-        return subjectId;
     }
 
     void editStudent() {
@@ -901,8 +875,9 @@ public class Admin {
             System.out.print("\t\t\t\t\t\t\t\t\t\t" + Color.AQUA_MINT + "👉🏻 Enter Your Choice : " + Color.RESET);
             choice = sc.nextLine();
 
+            PreparedStatement ps5;
+            int r5;
             switch (choice) {
-
                 case "1":
                     System.out.print("\t\t\t\t\t\t\t\t\t\t" + Color.NEON_PINK + "Enter new student name: " + RESET);
                     String studentName = sc.nextLine();
@@ -974,12 +949,12 @@ public class Admin {
                         System.out.println("\t\t\t\t\t\t\t\t\t\t" + CORAL_RED + "Enter valid values 😕" + RESET);
                         return;
                     }
-                    PreparedStatement ps5 = con.prepareStatement(sql);
+                    ps5 = con.prepareStatement(sql);
                     ps5.setLong(1, enrollNum);
                     ps5.setString(2, choice);
                     ps5.setString(3, stuEmail);
                     ps5.setInt(4, 0);
-                    int r5 = ps5.executeUpdate();
+                    r5 = ps5.executeUpdate();
                     System.out.println(r5 > 0 ? ("\t\t\t\t\t\t\t\t\t\t" + Color.LIME_GREEN_GLOW + "Done ✅" + RESET) : ("\t\t\t\t\t\t\t\t\t\t" + CORAL_RED + "Not done 😕" + RESET));
                     break;
 
@@ -1393,7 +1368,6 @@ public class Admin {
             pst.setString(2,studName);
             r=pst.executeUpdate();
             System.out.println( r>0 ? ("\t\t\t\t\t\t\t\t\t\t"+Color.LIME_GREEN_GLOW+"Deletion of "+r+" row is done ✅"+ RESET) : ("\t\t\t\t\t\t\t\t\t\t"+ CORAL_RED+"Deletion failed 😕"+ RESET));
-            StudentBST sb = new StudentBST();
             Student s = StudentBST.searchPreOrder(enrollNum);
             StudentBST.root = null;
             BSTThread th = new BSTThread();
@@ -1427,7 +1401,6 @@ public class Admin {
             pst.setInt(1,facultyId);
             pst.setString(2,facultyName);
             r=pst.executeUpdate();
-            FacultyBST f = new FacultyBST();
             Action a=new Action("deleteFaculty", FacultyBST.searchPreOrder(facultyId));
             a.setTableName("faculty");
             historyStack.push(a);
@@ -1670,7 +1643,7 @@ public class Admin {
             BufferedWriter bw = new BufferedWriter(new FileWriter("FacultyDetails" + id + ".txt"));
             Faculty f = FacultyBST.searchPreOrder(id);
             if (f == null) {
-                System.out.println("\t\t\t\t\t\t\t\t\t\t" + CORAL_RED + "faculty doesnot exists ! 😕" + RESET);
+                System.out.println("\t\t\t\t\t\t\t\t\t\t" + CORAL_RED + "faculty doesn't exists ! 😕" + RESET);
                 return;
             }
             bw.write("faculty id = " + f.getFacultyId() + "\nFaculty name = " + f.getName() + "\nEmail-id = " + f.getEmail() + "\nAddress" + f.getAddress()
