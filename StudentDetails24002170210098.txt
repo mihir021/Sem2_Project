@@ -1,0 +1,8 @@
+Student id = 24002170210098
+Student name = Mihir
+Email-id = mihir@ljku.edu.in
+Address =botad
+Dept id = 2
+course id = 1
+contact number = 9712969357
+

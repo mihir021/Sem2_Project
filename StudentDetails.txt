@@ -1,0 +1,35 @@
+Student enroll = 24002170210035
+Student name = Yashraj
+Email-id = yashraj@ljku.edu.in
+Address =meghpar
+course id = 3contact number = 9878096789
+Dept id = 2
+
+Student enroll = 24002170210088
+Student name = Mihir rathod
+Email-id = mihir@ljku.edu.in
+Address =botad
+course id = 1contact number = 9824243657
+Dept id = 1
+
+Student enroll = 24002170210098
+Student name = Mihir
+Email-id = mihir@ljku.edu.in
+Address =botad
+course id = 1contact number = 9712969357
+Dept id = 2
+
+Student enroll = 24002170210099
+Student name = TRY
+Email-id = abc@ljku.edu.in
+Address =abc
+course id = 3contact number = 9824243657
+Dept id = 2
+
+Student enroll = 24002170510015
+Student name = Yashvi
+Email-id = yashvi@ljku.edu.in
+Address =ahemdabad
+course id = 3contact number = 8998897898
+Dept id = 2
+
